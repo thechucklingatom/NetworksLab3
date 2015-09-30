@@ -1,8 +1,5 @@
 package Networks.lab3.Receiver;
 
-/**
- * Created by thechucklingatom on 9/28/2015.
- */
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -59,6 +56,7 @@ public class UDPConnection
     public byte[] Receive(){
         try{
             senderSocket.receive(recvPkt);
+
         }catch(IOException e){
             e.printStackTrace();
         }
