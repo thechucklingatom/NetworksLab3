@@ -20,6 +20,7 @@ public class UDPConnection
     DatagramSocket senderSocket;
     InetAddress address;
     DatagramPacket sendPkt;
+    DatagramPacket recvPkt;
 
     UDPConnection(int inWindow, int inSeqNum, int inNumToDrop) //for now, this just sends a packet on construction.
     //I plan to handle the actual sending, loss, and operations of the code in other methods,
@@ -46,7 +47,25 @@ public class UDPConnection
         }
     }
 
-    public void Send(Byte[] sendData, int length, InetAddress address, int port){
-        sendPkt
+    public void Send(byte[] sendData, int length, InetAddress address, int port){
+        try {
+            sendPkt = new DatagramPacket(sendData, length, address, port);
+            senderSocket.send(sendPkt);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public byte[] Receive(){
+        try{
+            senderSocket.receive(recvPkt);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return recvPkt.getData();
+    }
+
+    public void setAddress(InetAddress address){
+        this.address = address;
     }
 }
