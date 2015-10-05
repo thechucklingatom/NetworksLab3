@@ -11,13 +11,41 @@ public class Receiver {
 
     public static void main (String[] args) {
         byte address[] = {127,0,0,1};
-        UDPConnection myConnection = new UDPConnection(1,3,2);
-        byte b[] = new byte[6];
+        UDPConnection myConnection;
+        boolean allReceived = false;
 
         try {
-            myConnection.Send(b, 1, InetAddress.getByAddress(address), 4789);
+            myConnection = new UDPConnection(InetAddress.getByAddress(address));
         }catch(UnknownHostException e){
-            e.printStackTrace();
+            myConnection = new UDPConnection();
+        }
+        byte b[];
+
+        b = myConnection.Receive();
+
+        boolean packetTracker[] = new boolean[(int)b[0]];
+
+        for(boolean iter : packetTracker) iter = false;
+
+        while(!allReceived) {
+            b = myConnection.Receive();
+
+            packetTracker[(int)b[0]] = true;
+            try {
+                myConnection.Send(b, b.length, InetAddress.getByAddress(address), 4897);
+            }catch(UnknownHostException e){
+                e.printStackTrace();
+            }
+
+            for(boolean iter : packetTracker){
+                if(!iter){
+                    allReceived = false;
+                    break;
+                }else{
+                    allReceived = true;
+                }
+            }
+
         }
     }
 
