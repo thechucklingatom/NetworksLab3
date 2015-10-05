@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * @author Jesse Sheppard, Robert Putnam
  */
-public class UDPConnection extends Thread{
+public class UDPConnection {
     //i think the window is unneeded in this class
     int window = 0;
     int seqNum = 0;
